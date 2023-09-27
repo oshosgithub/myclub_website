@@ -197,6 +197,65 @@ $ git config --global alias.co checkout
 
 $ git init
 
-Step 2: 
+After that (master) will show next to the directory. 
+
+STEP 2: 
+
+$ git add . 
+
+STEP 3: 
+
+$ git commit -am "Initial Commit"    (on the quotation, name whatever)
+
+STEP 4: make ssh key. 
+
+1. get out of virtual environment. 
+
+mkdir ~/.ssh    (~/ means base directoyr of your computer)
+
+then, 
+
+cd ~/.ssh
+
+then,
+
+ssh-keygen.exe
+
+then,
+
+ls  
+
+it will show id_rsa id_rsa.pub
+
+then,
+cat id_rsa.pub
+
+It will show the key. Copy the key. Go to github website-->settings-->add new SSH key. 
+
+STEP 5: 
+
+go to the directoy of code file. 
+activate virtual env. make sure also showing (master)
+
+Git bash terminal to activate virtual environment. 
+source nameofvirtualenvironment/scripts/activate 
+
+Then,
+ls 
+to make sure you are in correct directory. 
+
+
+STEP 6: 
+go to github website and create a new repository. and follow the instruction of the 
+push repository. 
+
+STEP 7: after making any change, push the code again. 
+git add .
+git commit -am "name it the way you want"
+git push
+
+-------------------------------------------------------------------------
+This part is after the changed. 
+
 
 
