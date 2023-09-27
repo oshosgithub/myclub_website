@@ -1,0 +1,13 @@
+{% extends 'events/event_list.html' %}
+
+{% block content %}
+<div class='bg-info shadow container mx-5 my-5 text-start'>
+    <h1>Update Event </h1>
+        <form action='' method='POST'>
+        {% csrf_token %}
+            {{form.as_p}}
+            <input type='submit' value='SUBMIT' class='btn btn-primary'>
+        </form>
+</div>
+
+{% endblock %}

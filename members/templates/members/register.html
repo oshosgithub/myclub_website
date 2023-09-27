@@ -1,0 +1,20 @@
+{% extends 'events/event_list.html' %}
+{% load static %}
+
+<style>
+    body{
+        background-color: blue;
+    }
+</style>
+
+{% block content %}
+<div class='shadow container mx-5 my-5 p-5 justify-content-center' style='width: 40rem'>
+    <h1><strong>Register</strong></h1>
+        <form action='' method='POST'>
+        {% csrf_token %}
+            {{form.as_p}}
+            <input type='submit' value='SUBMIT' class='btn btn-secondary m-2'>
+        </form>
+</div>
+
+{% endblock %}

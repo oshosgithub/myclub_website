@@ -1,0 +1,202 @@
+    1) Changing Admin Site
+    2) Updating Admin page content
+    3) UserCreationForm control through widget
+    4) ModelForm control through widget
+    5) Generating text file 
+    6) Generating csv file
+    7) Generating pdf file 
+    8) Git repository inital setup, etc
+
+-----------------------------------------------------------------------------------
+1) Changing Admin Site
+
+step 1: go to admin.py page
+
+step 2: SAMPLE code for model name "Venue"
+
+@admin.register(Venue)
+class VenueAdmin(admin.ModelAdmin):
+    fields = ('attributes', and so on) #this will show in order you list when you adding a object. 
+    list_display = ('name', 'address', 'phone',) #this is list view on the admin page. 
+    ordering = ('name',) 
+    #this will order name attributes in alphabetecal order. Putting ('-name',) will do reverse. 
+    list_filter = ('attributes', and so on ) #this will have a filter next to the model to filter. 
+    search_fields = ('name', 'address',)
+
+-------------------------------------------------------------------------------------
+4) on root app urls.py, write 
+
+admin.site.site_header = 'Osman Administration Header' to change header. 
+admin.site.site_title = 'Osman Administration Title' to change title. 
+admin.site.index_title = 'Hello'   
+
+
+-------------------------------------------------------------------------------------
+3) Modifying UserCreationForm through Widget on forms.py
+
+step 1: on forms.py
+
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+
+class RegisterForm(UserCreationForm):
+    
+    #customized fields that's not part of build in User
+    work_email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control',}))
+    age = forms.CharField(max_length=5,widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Age'}))
+    
+    class Meta:
+        model = User
+        fields = [
+            'first_name', 
+            'last_name', 
+            'email',
+            'username', 
+            'password1', 
+            'password2',
+        ]
+
+  #(method to modify widget)
+    def __init__(self, *args, **kwargs):
+        super(RegisterForm,self).__init__(*args,**kwargs)
+        self.fields['username'].widget.attrs['class']='form-control'
+        self.fields['first_name'].widget.attrs['class']='form-control'
+        self.fields['last_name'].widget.attrs['class']='form-control'
+        self.fields['email'].widget.attrs['class']='form-control'
+        self.fields['password1'].widget.attrs['class']='form-control'
+        self.fields['password2'].widget.attrs['class']='form-control'
+
+step 2: on html page. 
+ <div class='shadow container mx-5 my-5 p-5 text-start'>
+    <h1><strong>Register</strong></h1>
+        <form action='' method='POST'>
+        {% csrf_token %}
+            {{form.as_p}}
+            <input type='submit' value='SUBMIT' class='btn btn-secondary m-2'>
+        </form>
+</div>
+
+--------------------------------------------------------------------------------------
+
+4) Method to modify ModelForm through widget. 
+
+step 1: 
+
+class EventForm(ModelForm):
+    class Meta:
+        model = Event
+        fields = '__all__' #to grap all attributes from the model. 
+
+        labels = {
+            'name': '', 
+            'event_date': '', 
+            'venue': 'Venue:',
+            'manager': 'Manager:', 
+            'description': '', 
+            'attendees': 'Attendees:', 
+        }
+
+        widgets = {
+            'name': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Event Name'}),
+            'event_date': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Date'}),
+            'venue': forms.Select(attrs={'class':'form-control', 'placeholder': 'Venue'}),
+            'manager': forms.Select(attrs={'class':'form-control', 'placeholder': 'Manager'}),
+            'Description': forms.Textarea(attrs={'class':'form-control', 'placeholder': 'Details'}),
+
+        }
+
+step 2: HTML page
+    {{form.as_p}}
+
+
+-----------------------------------------------------------------------------------
+5) Generating text file 
+
+#download text file (from django.http import HttpResponse)
+def venue_text(request):
+    response = HttpResponse(content_type='text/plain')
+    response['Content-Disposition']= 'attachement;filename=venues.txt'
+    venues = Venue.objects.all()
+    line = []
+    for venue in venues:
+        line.append(f'Name:{venue.name}\nAddress: {venue.address}\n\n\n')
+    
+    response.writelines(line)
+    return response
+
+--------------------------------------------------------------------------
+6) Generating csv file 
+
+step 1: import csv on views.py
+#download csv file  (import CSV)
+def download_venue_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition']='attachment;filename=venues.csv'
+
+    writer = csv.writer(response)
+
+    venues = Venue.objects.all()
+
+    writer.writerow(['Name', 'Address','Zip Code','Phone','Email','Website'])
+
+    for venue in venues:
+        writer.writerow([venue.name,venue.address, venue.zip_code, venue.phone, venue.email_address, venue.web,])
+
+    return response 
+----------------------------------------------------------------------------------
+7) Generating pdf file 
+step 1: pip install reportlab
+step 2: import on views.py 
+    from django.http import FileResponse
+    import io
+    from reportlab.pdfgen import canvas
+    from reportlab.lib.units import inch
+    from reportlab.lib.pagesizes import letter
+
+step 3: 
+
+#download pdf file
+def download_venue_pdf(request):
+    #creating Bytestream buffer
+    buf = io.BytesIO()
+    #creating canvas
+    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+    #creating a text object
+    textobj=c.beginText()
+    textobj.setTextOrigin(inch, inch)
+    textobj.setFont('Helvetica', 14)
+
+    venues = Venue.objects.all()
+    lines = []
+    for venue in venues:
+        lines.append(f'Name:{venue.name}')
+        lines.append(f'Address:{venue.address}')
+        lines.append(f'---------------')
+
+    for line in lines:
+        textobj.textLine(line)
+
+    c.drawText(textobj)
+    c.showPage()
+    c.save()
+    buf.seek(0)
+
+    return FileResponse(buf, as_attachment=True, filename='venue.pdf')
+------------------------------------------------------------------------------------
+9) write these code on Git bash terminal when first time setting up 
+
+Step 1: 
+
+$ git config --global user.name "Osman Hossain"
+
+$ git config --global user.email "hossainosman@hotmail.com"
+
+$ git config --global push.default matching
+
+$ git config --global alias.co checkout
+
+$ git init
+
+Step 2: 
+
+

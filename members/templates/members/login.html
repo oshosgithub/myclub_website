@@ -1,0 +1,14 @@
+{% extends 'events/event_list.html' %}
+
+{% block content %}
+<div class='bg-info shadow container mx-5 my-5 p-5 text-start'>
+    <h1>Add an Event </h1>
+        <form action='' method='POST'>
+        {% csrf_token %}
+            <input type='text' class='form-control my-2' placeholder='Username' name='username'>
+            <input type='password' class='form-control my-2' placeholder='Password' name='password'>
+            <input type='submit' value='SUBMIT' class='btn btn-tertiary btn-outline-primary'>
+        </form>
+</div>
+
+{% endblock %}

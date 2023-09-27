@@ -1,0 +1,11 @@
+{% extends 'events/event_list.html' %}
+
+{% block content %}
+   <div class='container shadow mx-5 my-3'>
+        <h3 class='bg-secondary p-2 m-1'>VENUES:</h3><hr>
+        {% for venue in venues %}
+        <p> {{venue.id}}: {{venue}}</p>
+        {% endfor %}
+   </div>
+
+{% endblock %}

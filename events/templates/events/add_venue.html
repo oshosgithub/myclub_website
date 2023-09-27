@@ -1,0 +1,24 @@
+{% extends 'events/event_list.html' %}
+
+{% block content %}
+<center class='container mx-5'>
+    <h1>Add Venue</h1>
+    {% if submitted %}
+        <p>You venue succefully added!</p>
+    {% else %}
+        <form action='' method='POST'>
+        {% csrf_token %}
+            {{form.as_p}}
+            <input type='submit' value='SUBMIT' class='btn btn-primary'>
+        </form>
+    {% endif %}
+</center>
+
+   <div class='container mx-5'>
+    <h3>Following Venues Already Present:</h3><hr>
+    {% for venue in venues %}
+       <p> {{venue.id}}: {{venue}}</p>
+    {% endfor %}
+   </div>
+
+{% endblock %}

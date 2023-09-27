@@ -1,0 +1,55 @@
+{% extends "events/event_list.html" %}
+
+{% block content %}
+
+
+<div class='d-flex flex-row p-4 m-5 '>
+   {% for event in event %}
+   <div class="card bg-info m-3" style="width: 30rem;">
+       <div class="card-body">
+       <h5 class="card-title">{{event.venue.name}}</h5>
+       <h6 class='card-title'>{{event.name}}</h6>
+       </div>
+       <ul class="list-group list-group-flush">
+       <li class="list-group-item"><strong>Date:</strong> {{event.event_date}}</li>
+       <li class="list-group-item"><a class='text-decoration-none' href='{{event.venue.web}}' target='_blank'><strong>Website:</strong> {{event.venue.web}}</a></li>
+       <li class="list-group-item"><strong>Manager:</strong> {{event.manager}}</li>
+       <li class="list-group-item"><strong>Description: </strong><hr>
+               {{event.description}}</li>
+     
+       <li class="list-group-item">
+           <strong>Attendees:</strong><hr>
+           {% for attendee in event.attendees.all %}
+           {{attendee.first_name}}<br>
+           {% endfor %}
+           </li>
+   
+       </ul>
+       <div class="card-body">
+       <a href="#" class="card-link">Card link</a>
+       <a href="#" class="card-link">Another link</a>
+       </div>
+   </div>
+   {% endfor %}
+
+   {% for event in venue %}
+   <div class="card bg-info m-3" style="width: 30rem;">
+       <div class="card-body">
+       <h5 class="card-title">{{event.name}}</h5>
+       <h6 class='card-title'>{{event.address}}</h6>
+       </div>
+       <ul class="list-group list-group-flush">
+       <li class="list-group-item"><strong>Zip Code:</strong> {{event.zip_code}}</li>
+       <li class="list-group-item"><a class='text-decoration-none' href='{{event.web}}' target='_blank'><strong>Website:</strong> {{event.web}}</a></li>
+       <li class="list-group-item"><strong>Email:</strong> {{event.email_address}}</li>   
+       </ul>
+       <div class="card-body">
+       <a href="#" class="card-link">Card link</a>
+       <a href="#" class="card-link">Another link</a>
+       </div>
+   </div>
+   {% endfor %}
+</div>
+
+
+{% endblock %}

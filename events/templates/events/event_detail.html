@@ -1,0 +1,35 @@
+ {% extends "events/event_list.html" %}
+
+ {% block content %}
+
+
+ <div class='d-flex flex-row p-4 m-5 '>
+    <div class="card bg-info m-3" style="width: 30rem;">
+        <div class="card-body">
+        <h5 class="card-title">{{event.venue.name}}</h5>
+        <h6 class='card-title'>{{event.name}}</h6>
+        </div>
+        <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Date:</strong> {{event.event_date}}</li>
+        <li class="list-group-item"><a class='text-decoration-none' href='{{event.venue.web}}' target='_blank'><strong>Website:</strong> {{event.venue.web}}</a></li>
+        <li class="list-group-item"><strong>Manager:</strong> {{event.manager}}</li>
+        <li class="list-group-item"><strong>Description: </strong><hr>
+                {{event.description}}</li>
+      
+        <li class="list-group-item">
+            <strong>Attendees:</strong><hr>
+            {% for attendee in event.attendees.all %}
+            {{attendee.first_name}}<br>
+            {% endfor %}
+            </li>
+    
+        </ul>
+        <div class="card-body">
+            <p class="btn btn-secondary "><a class='text-decoration-none' href='{% url "update_event" event.id %}'>Update</a></p>
+            <p class="btn btn-danger"><a class='text-decoration-none' href='{% url "delete_event" event.id %}'>Delete</a></p>
+        </div>
+    </div>
+</div>
+
+
+ {% endblock %}
